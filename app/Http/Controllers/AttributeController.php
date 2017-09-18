@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Entity\AttributeOptions;
 use App\Entity\Category;
 use Illuminate\Http\Request;
 use App\Entity\Attribute;
@@ -109,8 +110,16 @@ class AttributeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id = 0)
     {
-        //
+        $attribute = Attribute::find($id);
+        if ($id == 0 || !$attribute || $attribute->user_id != Auth::id())
+            return response()->json(['status'=>false, 'message'=>'Something wrong! please try again']);
+
+        AttributeOptions::where(['attribute_id' => $id])->delete();
+        if($attribute->delete())
+            return response()->json(['status'=>true, 'message'=>'Deleted Successfully']);
+
+        return response()->json(['status'=>false, 'message'=>'Something wrong! please try again']);
     }
 }

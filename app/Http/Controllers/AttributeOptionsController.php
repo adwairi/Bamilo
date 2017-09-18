@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Entity\ProductAttributes;
 use Illuminate\Http\Request;
 
-class ProductAttributesController extends Controller
+class AttributeOptionsController extends Controller
 {
 
     /**
@@ -48,16 +47,16 @@ class ProductAttributesController extends Controller
      */
     public function store(Request $request)
     {
-        $attributes = $request->get('attributes');
-        $product_id = $request->get('product_id');
+        $options = $request->get('options');
+        $attribute_id = $request->get('attribute_id');
 
         $status = true;
-        if (count($attributes)){
+        if (count($options)){
             $productAttributesObj = new ProductAttributes();
-            foreach ($attributes as $attribute) {
+            foreach ($options as $option) {
                 $relationID = $productAttributesObj->insertGetId([
-                    'product_id' => $product_id,
-                    'attribute_id'  => $attribute
+                    'product_id' => $attribute_id,
+                    'attribute_id'  => $option
                 ]);
                 if ($relationID == 0)
                     $status = false;
