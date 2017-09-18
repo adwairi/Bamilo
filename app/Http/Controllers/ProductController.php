@@ -63,9 +63,10 @@ class ProductController extends Controller
             'title'     => 'required',
             'model'     => 'required',
             'status'    => 'required|in:not_available,available,coming_soon',
-            'price'     => 'required',
-            'quantity'  => 'required',
+            'price'     => 'required|integer',
+            'quantity'  => 'required|integer',
             'category'  => 'required',
+            'image'     => 'file|image',
         ]);
         if($validator->fails())
             return response()->json(['status'=>false, 'message'=>$validator->messages()]);
@@ -80,6 +81,15 @@ class ProductController extends Controller
         $product->desc = $data['desc'];
         $product->category_id = $data['category'];
         $product->user_id = Auth::user()->id;
+
+        $imgName = time().'.'.$request->image->getClientOriginalExtension();
+
+        /*
+        talk the select file and move it public directory and make avatars
+        folder if doesn't exsit then give it that unique name.
+        */
+        $request->user_photo->move(public_path('avatars'), $imgName);
+
         if ($product->save()){
             return response()->json(['status'=>true]);
         }
