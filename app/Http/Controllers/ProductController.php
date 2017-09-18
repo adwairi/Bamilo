@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Entity\Attribute;
+use App\Entity\ProductAttributes;
 use Illuminate\Http\Request;
 use App\Entity\Product;
 use App\Entity\Category;
@@ -125,8 +126,16 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id = 0)
     {
-        //
+        $product = Product::find($id);
+        if ($id == 0 || !$product || $product->user_id != Auth::id())
+            return response()->json(['status'=>false, 'message'=>'Something wrong! please try again']);
+
+        ProductAttributes::where(['product_id' => $id])->delete();
+        if($product->delete())
+                return response()->json(['status'=>true, 'message'=>'Deleted Successfully']);
+
+        return response()->json(['status'=>false, 'message'=>'Something wrong! please try again']);
     }
 }

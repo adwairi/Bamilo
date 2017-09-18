@@ -37,12 +37,22 @@ class ProductAttributesController extends Controller
     {
         $attributes = $request->get('attributes');
         $product_id = $request->get('product_id');
+
+        $status = true;
         if (count($attributes)){
+            $productAttributesObj = new ProductAttributes();
             foreach ($attributes as $attribute) {
-                $productAttributes = new ProductAttributes();
+                $relationID = $productAttributesObj->insertGetId([
+                    'product_id' => $product_id,
+                    'attribute_id'  => $attribute
+                ]);
+                if ($relationID == 0)
+                    $status = false;
 
             }
         }
+
+        return response()->json(['status'=>$status]);
     }
 
     /**

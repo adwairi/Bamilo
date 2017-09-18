@@ -19,7 +19,7 @@ class CreateProductsTable extends Migration
             $table->integer('category_id')->unsigned();
             $table->string('product_model', 500);
             $table->string('imgUrl', 500)->nullable();
-            $table->text('desc');
+            $table->text('desc')->nullable();
             $table->float('price');
             $table->enum('status',['not_available', 'available', 'coming_soon']);
             $table->integer('quantity');

@@ -32,7 +32,7 @@
                                 </thead>
                                 <tbody>
                                     @foreach($products as $key=>$product)
-                                        <tr class="odd">
+                                        <tr class="product">
                                             <td>{{$product->title}}</td>
                                             <td>{{$product->product_model}}</td>
                                             <td>{{$product->price}}</td>
@@ -40,13 +40,13 @@
                                             <td>{{$product->quantity}}</td>
                                             <td>{{$product->desc}}</td>
                                             <td>
-                                                <button type="button" class="delete btn btn-primary btn-sm" data-product-id="{{$product->id}}">
+                                                <button type="button" data-type="" data-message="" id="delete_product_button" class="btn btn-danger btn-sm" data-product-id="{{$product->id}}">
                                                     Delete
                                                 </button>
-                                                <button type="button" class="attributes btn btn-primary btn-sm" data-product-id="{{$product->id}}" data-toggle="modal" data-target="#modal-attr">
+                                                <button type="button" class="attributes btn btn-success btn-sm" data-product-id="{{$product->id}}" data-toggle="modal" data-target="#modal-attr">
                                                     Add Attributes
                                                 </button>
-                                                <button type="button" class="images btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-image">
+                                                <button type="button" class="images btn btn-info btn-sm" data-toggle="modal" data-target="#modal-image">
                                                     Image
                                                 </button>
                                             </td>
@@ -68,7 +68,7 @@
                             <h4 class="modal-title" id="myModalLabel">Add Product</h4>
                         </div>
                         <div class="modal-body">
-                            <form actio="/product" id="form" method="POST" class="form-horizontal" enctype="multipart/form-data">
+                            <form action="/product" id="form" method="POST" class="form-horizontal" enctype="multipart/form-data">
                                 {{ csrf_field() }}
 
                                 <div class="form-group">
@@ -151,10 +151,10 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal">×</button>
-                            <h4 class="modal-title" id="myModalLabel">Add Product</h4>
+                            <h4 class="modal-title" id="myModalLabel">Add Attributes</h4>
                         </div>
                         <div class="modal-body">
-                            <form actio="/productAttributes" id="form_attr" method="POST" class="form-horizontal" enctype="multipart/form-data">
+                            <form action="/productAttributes" id="form_attr" method="POST" class="form-horizontal" enctype="multipart/form-data">
                                 {{ csrf_field() }}
 
                                 <div class="form-group">
@@ -216,13 +216,13 @@
     $(document).on("click", "#save_attributes", function (e) {
         var data = $("#form_attr").serializeArray(),
             url = $("#form_attr").attr('action');
-        console.log(data);
         $.ajax({
             url: url,
             type: 'POST',
             data: data,
             datatype: 'json',
         }).done(function(data) {
+
             if(data.status == false){
                 validation_messages(data);
             }else{
@@ -249,6 +249,27 @@
             $('#'+field_name).html(html);
         });
     }
+
+
+    $(document).on("click", "#delete_product_button", function (e) {
+
+        var delete_product_button = $(this);
+        var id = delete_product_button.attr('data-product-id');
+        $.ajax({
+            url: "/product/"+id,
+            type: 'DELETE',
+            datatype: 'json',
+        }).done(function(data) {
+            if(data.status == false){
+                alert(data.message);
+            }else {
+                delete_product_button.closest("tr").remove();
+                alert(data.message);
+            }
+        });
+        e.preventDefault();
+    });
+
 
 </script>
 

@@ -16,9 +16,9 @@ class CreateProductAttributesTable extends Migration
         Schema::create('product_attributes', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('product_id')->unsigned();
-            $table->integer('attribut_id')->unsigned();
+            $table->integer('attribute_id')->unsigned();
             $table->foreign('product_id')->references('id')->on('products');
-            $table->foreign('attribut_id')->references('id')->on('attributes');
+            $table->foreign('attribute_id')->references('id')->on('attributes');
 
             $table->timestamps();
         });

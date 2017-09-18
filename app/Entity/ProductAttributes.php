@@ -13,4 +13,9 @@ class ProductAttributes extends Model
     public function attribute(){
         return $this->belongsTo(Attribute::class, 'attribute_id');
     }
+
+    public static function insertArray($attributes){
+
+        DB::table('product_attributes')->insert($attributes);
+    }
 }
