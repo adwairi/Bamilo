@@ -2,25 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Entity\Category;
+use App\Entity\ProductAttributes;
 use Illuminate\Http\Request;
-use App\Entity\Attribute;
-use Illuminate\Support\Facades\Auth;
-use Validator;
-class AttributeController extends Controller
+
+class ProductAttributesController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
-
-
     /**
      * Display a listing of the resource.
      *
@@ -28,9 +14,7 @@ class AttributeController extends Controller
      */
     public function index()
     {
-        $attributes = Attribute::where(['user_id'=>Auth::user()->id])->get();
-        $categories = Category::select(['id','title'])->where(['user_id'=>Auth::id()])->get();
-        return view('attributes.index', ['attributes' => $attributes, 'categories' => $categories->toArray()]);
+        //
     }
 
     /**
@@ -51,21 +35,13 @@ class AttributeController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'title'     => 'required',
-            'category'  => 'required',
-        ]);
-        if($validator->fails())
-            return response()->json(['status'=>false, 'message'=>$validator->messages()]);
+        $attributes = $request->get('attributes');
+        $product_id = $request->get('product_id');
+        if (count($attributes)){
+            foreach ($attributes as $attribute) {
+                $productAttributes = new ProductAttributes();
 
-        $attribute = new Attribute();
-        $data = $request->all();
-        $attribute->title = $data['title'];
-        $attribute->desc = $data['desc'];
-        $attribute->category_id = $data['category'];
-        $attribute->user_id = Auth::user()->id;
-        if ($attribute->save()){
-            return response()->json(['status'=>true]);
+            }
         }
     }
 

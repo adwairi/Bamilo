@@ -34,14 +34,21 @@
                                     @foreach($products as $key=>$product)
                                         <tr class="odd">
                                             <td>{{$product->title}}</td>
-                                            <td>{{$product->model}}</td>
+                                            <td>{{$product->product_model}}</td>
                                             <td>{{$product->price}}</td>
                                             <td>{{$product->status}}</td>
                                             <td>{{$product->quantity}}</td>
                                             <td>{{$product->desc}}</td>
                                             <td>
-                                                <a href="#" class="attributes" data-product-id="{{$product->id}}">attributes</a>
-                                                <a href="#" class="images" data-product-id="{{$product->id}}">image</a>
+                                                <button type="button" class="delete btn btn-primary btn-sm" data-product-id="{{$product->id}}">
+                                                    Delete
+                                                </button>
+                                                <button type="button" class="attributes btn btn-primary btn-sm" data-product-id="{{$product->id}}" data-toggle="modal" data-target="#modal-attr">
+                                                    Add Attributes
+                                                </button>
+                                                <button type="button" class="images btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-image">
+                                                    Image
+                                                </button>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -61,45 +68,59 @@
                             <h4 class="modal-title" id="myModalLabel">Add Product</h4>
                         </div>
                         <div class="modal-body">
-                            <form actio="/product" method="post" id="form" class="form-horizontal" enctype="multipart/form-data">
+                            <form actio="/product" id="form" method="POST" class="form-horizontal" enctype="multipart/form-data">
+                                {{ csrf_field() }}
+
                                 <div class="form-group">
-                                    <label for="title" class="col-md-3 control-label">Title</label>
+                                    <label for="title" class="col-md-3 control-label">Title <span class="text-danger">*</span></label>
                                     <div class="col-md-9">
                                         <input type="text" class="form-control" name="title" id="title" placeholder="title">
-                                        <br/><font color="red" class="validation" id="title_validation" ></font>
+                                       <font color="red" class="validation" id="title_validation" ></font>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="model" class="col-md-3 control-label">Model</label>
+                                    <label for="model" class="col-md-3 control-label">Model <span class="text-danger">*</span></label>
                                     <div class="col-md-9">
                                         <input type="text" class="form-control" name="model" id="model" placeholder="model">
-                                        <br/><font color="red" class="validation" id="model_validation" ></font>
+                                       <font color="red" class="validation" id="model_validation" ></font>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="price" class="col-md-3 control-label">Price</label>
+                                    <label for="price" class="col-md-3 control-label">Price <span class="text-danger">*</span></label>
                                     <div class="col-md-9">
                                         <input type="text" class="form-control" name="price" id="price" placeholder="price">
-                                        <br/><font color="red" class="validation" id="price_validation" ></font>
+                                       <font color="red" class="validation" id="price_validation" ></font>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="status" class="col-md-3 control-label">Status</label>
+                                    <label for="status" class="col-md-3 control-label">Status <span class="text-danger">*</span></label>
                                     <div class="col-md-9">
                                         <select class="form-control" id="status" name="status">
-                                            <option>Not selected</option>
+                                            <option>select status</option>
                                             @foreach(\App\Entity\Product::getStatus() as $key=>$status)
                                                 <option value="{{$key}}">{{$status}}</option>
                                             @endforeach
                                         </select>
-                                        <br/><font color="red" class="validation" id="status_validation" ></font>
+                                       <font color="red" class="validation" id="status_validation" ></font>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="quantity" class="col-md-3 control-label">Quantity</label>
+                                    <label for="category" class="col-md-3 control-label">Category <span class="text-danger">*</span></label>
+                                    <div class="col-md-9">
+                                        <select class="form-control" id="category" name="category" >
+                                        <option>select category</option>
+                                            @foreach($categories as $category)
+                                                <option value="{{$category['id']}}">{{$category['title']}}</option>
+                                            @endforeach
+                                        </select>
+                                       <font color="red" class="validation" id="category_validation" ></font>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="quantity" class="col-md-3 control-label">Quantity <span class="text-danger">*</span></label>
                                     <div class="col-md-9">
                                         <input type="text" class="form-control" name="quantity" id="quantity" placeholder="quantity">
-                                        <br/><font color="red" class="validation" id="quantity_validation" ></font>
+                                       <font color="red" class="validation" id="quantity_validation" ></font>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -114,8 +135,6 @@
                                         <input type="file" name="image" class="form-control-file" id="image">
                                     </div>
                                 </div>
-                                <input type="hidden" name="id" id="product_id" value="">
-                                <input type="submit" id="save_product" class="btn btn-primary" value="save">
                             </form>
                         </div>
                         <div class="modal-footer">
@@ -126,25 +145,93 @@
                 </div>
             </div>
 
+
+            <div class="modal fade" id="modal-attr" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">×</button>
+                            <h4 class="modal-title" id="myModalLabel">Add Product</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form actio="/productAttributes" id="form_attr" method="POST" class="form-horizontal" enctype="multipart/form-data">
+                                {{ csrf_field() }}
+
+                                <div class="form-group">
+                                    <label for="attributes" class="col-md-3 control-label">Attributes <span class="text-danger">*</span></label>
+                                    <div class="col-md-9">
+                                        <select class="form-control" id="attributes" name="attributes[]" multiple>
+                                            <option></option>
+                                            @foreach($attributes as $attribute)
+                                                <option value="{{$attribute['id']}}">{{$attribute['title']}}</option>
+                                            @endforeach
+                                        </select>
+                                        <font color="red" class="validation" id="attributes_validation" ></font>
+                                    </div>
+                                </div>
+                                <input type="hidden" name="product_id" id="product_id" value="">
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn" data-dismiss="modal">Close</button>
+                            <button type="button" id="save_attributes" class="btn btn-primary">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
 <script>
 
-//    $(document).on("click", "#save_product", function (e) {
-//        var data = $("#form").serializeArray(),
-//            url = $("#form").attr('action');
-//        $.ajax({
-//            url: url,
-//            type: 'POST',
-//            data: data,
-//            datatype: 'json',
-//        }).done(function(data) {
-//            if(data.status == false){
-//                validation_messages(data);
-//            }else{
-//                window.location.reload();
-//            }
-//        });
-//        e.preventDefault();
-//    });
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+    $(document).on("click", "#save_product", function (e) {
+        var data = $("#form").serializeArray(),
+            url = $("#form").attr('action');
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: data,
+            datatype: 'json',
+        }).done(function(data) {
+            if(data.status == false){
+                validation_messages(data);
+            }else{
+                window.location.reload();
+            }
+        }).fail(function (data) {
+        });
+        e.preventDefault();
+    });
+
+    $('.attributes').click(function () {
+        $('#product_id').val($(this).attr('data-product-id'));
+    })
+
+
+    $(document).on("click", "#save_attributes", function (e) {
+        var data = $("#form_attr").serializeArray(),
+            url = $("#form_attr").attr('action');
+        console.log(data);
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: data,
+            datatype: 'json',
+        }).done(function(data) {
+            if(data.status == false){
+                validation_messages(data);
+            }else{
+                window.location.reload();
+            }
+        }).fail(function (data) {
+        });
+        e.preventDefault();
+    });
 
     function validation_messages(data) {
         $('.validation').html('');
@@ -162,6 +249,7 @@
             $('#'+field_name).html(html);
         });
     }
+
 </script>
 
 @endsection

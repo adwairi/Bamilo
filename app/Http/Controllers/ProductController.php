@@ -2,11 +2,27 @@
 
 namespace App\Http\Controllers;
 
+use App\Entity\Attribute;
 use Illuminate\Http\Request;
 use App\Entity\Product;
+use App\Entity\Category;
+use Illuminate\Support\Facades\Auth;
 use Validator;
 class ProductController extends Controller
 {
+
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+
+
     /**
      * Display a listing of the resource.
      *
@@ -14,8 +30,14 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::all();
-        return view('products.index', ['products' => $products]);
+        $products = Product::where(['user_id'=>Auth::user()->id])->get();
+        $categories = Category::select(['id','title'])->where(['user_id'=>Auth::id()])->get();
+        $attributes = Attribute::select(['id','title'])->where(['user_id'=>Auth::id()])->get();
+        return view('products.index', [
+                                            'products' => $products,
+                                            'categories' => $categories->toArray(),
+                                            'attributes' => $attributes->toArray(),
+            ]);
     }
 
     /**
@@ -36,20 +58,30 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-die('sssssssssssssss');
         $validator = Validator::make($request->all(), [
             'title'     => 'required',
             'model'     => 'required',
-            'status'    => 'required,in:not_available,available,coming_soon',
+            'status'    => 'required|in:not_available,available,coming_soon',
             'price'     => 'required',
             'quantity'  => 'required',
+            'category'  => 'required',
         ]);
         if($validator->fails())
             return response()->json(['status'=>false, 'message'=>$validator->messages()]);
 
-        return response()->json(['status'=>true]);
-//        $data = $request->all();
-//        $product = new Product();
+        $product = new Product();
+        $data = $request->all();
+        $product->title = $data['title'];
+        $product->product_model = $data['model'];
+        $product->status = $data['status'];
+        $product->price = $data['price'];
+        $product->quantity = $data['quantity'];
+        $product->desc = $data['desc'];
+        $product->category_id = $data['category'];
+        $product->user_id = Auth::user()->id;
+        if ($product->save()){
+            return response()->json(['status'=>true]);
+        }
 
     }
 

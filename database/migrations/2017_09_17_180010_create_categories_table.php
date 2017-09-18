@@ -17,10 +17,8 @@ class CreateCategoriesTable extends Migration
             $table->increments('id');
             $table->string('title', 500);
             $table->text('desc');
+            $table->integer('user_id')->unsinged();
             $table->integer('parent_id')->unsinged()->nullable();
-//            $table->foreign('parent_id')
-//                ->references('id')->on('categories')
-//                ->onDelete('cascade');
             $table->timestamps();
         });
     }
