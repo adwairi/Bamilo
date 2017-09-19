@@ -82,14 +82,14 @@
         </div>
     </div>
 </nav>
-
+<div class="main">
 @if (Route::has('login'))
         @auth
         @include('head.sidebar_menu')
         @endauth
 @endif
 
-<div class="main">
+
     {{--@include('head.header')--}}
 @yield('content')
 </div>
