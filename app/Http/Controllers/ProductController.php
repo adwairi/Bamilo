@@ -66,7 +66,7 @@ class ProductController extends Controller
             'price'     => 'required|integer',
             'quantity'  => 'required|integer',
             'category'  => 'required',
-            'image'     => 'file|image',
+            'image'     => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
         if($validator->fails())
             return response()->json(['status'=>false, 'message'=>$validator->messages()]);
@@ -82,13 +82,19 @@ class ProductController extends Controller
         $product->category_id = $data['category'];
         $product->user_id = Auth::user()->id;
 
-        $imgName = time().'.'.$request->image->getClientOriginalExtension();
+        $image = $request->file('image');
 
-        /*
-        talk the select file and move it public directory and make avatars
-        folder if doesn't exsit then give it that unique name.
-        */
-        $request->user_photo->move(public_path('avatars'), $imgName);
+        $input['imagename'] = time().'.'.$image->getClientOriginalExtension();
+
+        $destinationPath = public_path('/images');
+
+        $image->move($destinationPath, $input['imagename']);
+
+
+        $this->postImage->add($input);
+
+//        $imgName = time().'.'.$request->image->getClientOriginalExtension();
+//        $request->user_photo->move(public_path('images'), $imgName);
 
         if ($product->save()){
             return response()->json(['status'=>true]);

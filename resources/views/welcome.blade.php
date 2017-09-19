@@ -1,8 +1,5 @@
 @include('layouts.main')
 
-@php
-$products = \App\Entity\Product::all();
-@endphp
 
 <!doctype html>
 <html lang="{{ app()->getLocale() }}">
