@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Entity\Attribute;
-use App\Entity\AttributeOptions;
 use App\Entity\Category;
 use App\Entity\Product;
 use Illuminate\Http\Request;
@@ -32,7 +31,7 @@ class HomeController extends Controller
             'categories' => Category::all(),
             'attributes' => Attribute::all(),
         ];
-        return view('welcome', $params);
+        return view('home', $params);
     }
 
 

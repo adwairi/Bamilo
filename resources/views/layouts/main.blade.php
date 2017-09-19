@@ -15,6 +15,7 @@
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
     <link href="{{ asset('css/bamilo/sidebar_menu.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('css/bamilo/items.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('css/bamilo/demo.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('css/bamilo/tree_view.css') }}" rel="stylesheet" type="text/css">
     {{--    <link href="{{ asset('css/bamilo/topBare.css') }}" rel="stylesheet" type="text/css">--}}
 
@@ -26,6 +27,8 @@
     <script src="{{ asset('js/bamilo/items.js') }}"></script>
     <script src="{{ asset('js/bamilo/tree_view.js') }}"></script>
     <script src="{{ asset('js/bamilo/data_table.js') }}"></script>
+    <script src="{{ asset('js/bamilo/pace.min.js') }}"></script>
+    <script src="{{ asset('js/bamilo/demo.js') }}"></script>
 
 
 </head>
@@ -62,24 +65,17 @@
                 <li><a href="{{ route('login') }}">Login</a></li>
                 <li><a href="{{ route('register') }}">Register</a></li>
                 @else
-                    <li class="dropdown">
-                        <a href="#" data-toggle="dropdown" role="button" aria-expanded="false">
-                            {{ Auth::user()->name }} <span class="caret"></span>
+                    <li><a href="{{ route('home') }}">Home</a></li>
+                    <li>
+                        <a href="{{ route('logout') }}"
+                           onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                            Logout
                         </a>
 
-                        <ul class="dropdown-menu" role="menu">
-                            <li>
-                                <a href="{{ route('logout') }}"
-                                   onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                    Logout
-                                </a>
-
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                    {{ csrf_field() }}
-                                </form>
-                            </li>
-                        </ul>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                            {{ csrf_field() }}
+                        </form>
                     </li>
                     @endguest
             </ul>
