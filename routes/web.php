@@ -11,6 +11,7 @@
 |
 */
 Route::get('/', 'HomeController@index')->name('home');
+Route::POST('/', 'HomeController@filter')->name('home');
 
 Auth::routes();
 

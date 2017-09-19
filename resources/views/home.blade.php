@@ -38,7 +38,7 @@
             position: relative;
         }
 
-        .top-right {
+            .top-right {
             position: absolute;
             right: 10px;
             top: 18px;
@@ -74,6 +74,7 @@
     <div id="page-content-wrapper">
         <div class="container">
             @foreach($products as $product)
+                {{ csrf_field() }}
                 <div class="row">
                     <div class="col-sm-3">
                         <div class="card">
@@ -99,35 +100,36 @@
     <div id="px-demo-sidebar-loader" class="form-loading form-loading-inverted"></div>
     <div class="px-sidebar-content ps-container ps-theme-default ps-active-y"
          data-ps-id="1e1a8193-e6ce-3e4a-6ede-9b8721a32a2a">
-        <div id="px-demo-togglers">
-            <h6 class="px-demo-sidebar-header b-y-1 darker">Categories</h6>
-            <div>
-                <div class="box m-a-0 border-radius-0 bg-transparent">
-                    @foreach($categories as $category)
+        <form id="filter" method="POST" action="{{route('home')}}">
+            <div id="px-demo-togglers">
+                <h6 class="px-demo-sidebar-header b-y-1 darker">Categories</h6>
+                <div>
+                    <div class="box m-a-0 border-radius-0 bg-transparent">
+                        @foreach($categories as $category)
+                                <div class="p-l-3 checkbox m-t-0">
+                                    <label>
+                                        <input class="filteration" type="checkbox" name="categories[]" value="{{ $category->id }}"> {{ $category->title }}
+                                    </label>
+                                </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+            <div id="px-demo-togglers">
+                <h6 class="px-demo-sidebar-header b-y-1 darker">Attributes</h6>
+                <div>
+                    <div class="box m-a-0 border-radius-0 bg-transparent">
+                        @foreach($attributes as $attribute)
                             <div class="p-l-3 checkbox m-t-0">
                                 <label>
-                                    <input type="checkbox" value="{{ $category->id }}"> {{ $category->title }}
+                                    <input type="checkbox" class="filteration" name="attributes[]" value="{{ $attribute->id }}"> {{ $attribute->title }}
                                 </label>
                             </div>
-                    @endforeach
+                        @endforeach
+                    </div>
                 </div>
             </div>
-        </div>
-
-        <div id="px-demo-togglers">
-            <h6 class="px-demo-sidebar-header b-y-1 darker">Attributes</h6>
-            <div>
-                <div class="box m-a-0 border-radius-0 bg-transparent">
-                    @foreach($attributes as $attribute)
-                        <div class="p-l-3 checkbox m-t-0">
-                            <label>
-                                <input type="checkbox" value="{{ $attribute->id }}"> {{ $attribute->title }}
-                            </label>
-                        </div>
-                    @endforeach
-                </div>
-            </div>
-        </div>
+        </form>
 
     </div>
 </div>
@@ -136,12 +138,42 @@
     // -------------------------------------------------------------------------
     // Initialize DEMO sidebar
 
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
     $(function() {
         pxDemo.initializeDemoSidebar();
 
         $('#px-demo-sidebar').pxSidebar();
         pxDemo.initializeDemo();
     });
+
+
+    $(document).on("click", ".filteration", function (e) {
+//        $(this).attr("checked", "checked")
+        var data = $("#filter").serializeArray(),
+            url = $("#filter").attr('action');
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: data,
+            datatype: 'json',
+        }).done(function(data) {
+            console.log(data);
+//            if(data.status == false){
+//                validation_messages(data);
+//            }else{
+//                window.location.reload();
+//            }
+        }).fail(function (data) {
+        });
+//        e.preventDefault();
+    });
+
+
 </script>
 </body>
 </html>
