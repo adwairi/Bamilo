@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Entity\AttributeOptions;
 use Illuminate\Http\Request;
-
+use Validator;
 class AttributeOptionsController extends Controller
 {
 
@@ -47,24 +48,23 @@ class AttributeOptionsController extends Controller
      */
     public function store(Request $request)
     {
-        $options = $request->get('options');
+        $validator = Validator::make($request->all(), [
+            'option_title'     => 'required',
+        ]);
+        if($validator->fails())
+            return response()->json(['status'=>false, 'message'=>$validator->messages()]);
+
+
+        $title= $request->get('option_title');
         $attribute_id = $request->get('attribute_id');
 
         $status = true;
-        if (count($options)){
-            $productAttributesObj = new ProductAttributes();
-            foreach ($options as $option) {
-                $relationID = $productAttributesObj->insertGetId([
-                    'product_id' => $attribute_id,
-                    'attribute_id'  => $option
-                ]);
-                if ($relationID == 0)
-                    $status = false;
+        $attrOptionsObj = new AttributeOptions();
+        $attrOptionsObj->title = $title;
+        $attrOptionsObj->attribute_id = $attribute_id;
 
-            }
-        }
-
-        return response()->json(['status'=>$status]);
+        if ($attrOptionsObj->save())
+            return response()->json(['status'=>$status]);
     }
 
     /**

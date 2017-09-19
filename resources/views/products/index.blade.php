@@ -2,10 +2,6 @@
 
 @section('content')
             <div class="px-content">
-                <div class="page-header">
-                    <h1><span class="text-muted font-weight-light"><i class="page-header-icon ion-ios-keypad"></i>Tables / </span>DataTables</h1>
-                </div>
-
                 <div class="panel">
                     <div class="panel-heading">
                         <div class="panel-title pull-left">Products</div>

@@ -20,3 +20,4 @@ Route::resource('category', 'CategoryController');
 Route::resource('product', 'ProductController');
 Route::resource('attribute', 'AttributeController');
 Route::resource('productAttributes', 'ProductAttributesController');
+Route::resource('attributeOptions', 'AttributeOptionsController');

@@ -2,9 +2,9 @@
 
 @section('content')
     <div class="px-content">
-        <div class="page-header">
-            <h1><span class="text-muted font-weight-light"><i class="page-header-icon ion-ios-keypad"></i>Tables / </span>DataTables</h1>
-        </div>
+        {{--<div class="page-header">--}}
+            {{--<h1><span class="text-muted font-weight-light"><i class="page-header-icon ion-ios-keypad"></i>Tables / </span>DataTables</h1>--}}
+        {{--</div>--}}
 
         <div class="panel">
             <div class="panel-heading">
@@ -34,7 +34,12 @@
                                 <td>{{$attribute->category_id}}</td>
                                 <td>{{$attribute->desc}}</td>
                                 <td>
-                                    <a href="#" class="options btn btn-primary" data-attribute-id="{{$attribute->id}}">Manage Options</a>
+                                    <button type="button" data-type="" data-message="" id="delete_attr_button" class="btn btn-danger btn-sm" data-attr-id="{{$attribute->id}}">
+                                        Delete
+                                    </button>
+                                    <button type="button" class="options btn btn-success btn-sm" data-attr-id="{{$attribute->id}}" data-toggle="modal" data-target="#modal-option">
+                                        Add Options
+                                    </button>
                                 </td>
                             </tr>
                         @endforeach
@@ -54,7 +59,7 @@
                     <h4 class="modal-title" id="myModalLabel">Add Attribute</h4>
                 </div>
                 <div class="modal-body">
-                    <form actio="/attribute" id="form" method="POST" class="form-horizontal" enctype="multipart/form-data">
+                    <form action="/attribute" id="form" method="POST" class="form-horizontal" enctype="multipart/form-data">
                         {{ csrf_field() }}
 
                         <div class="form-group">
@@ -92,6 +97,35 @@
         </div>
     </div>
 
+    <div class="modal fade" id="modal-option" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <h4 class="modal-title" id="myModalLabel">Add Option</h4>
+                </div>
+                <div class="modal-body">
+                    <form action="/attributeOptions" id="form_options" method="POST" class="form-horizontal" enctype="multipart/form-data">
+                        {{ csrf_field() }}
+
+                        <div class="form-group">
+                            <label for="title" class="col-md-3 control-label">Title <span class="text-danger">*</span></label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" name="option_title" id="option_title" placeholder="title">
+                                <font color="red" class="validation" id="option_title_validation" ></font>
+                            </div>
+                        </div>
+                        <input type="hidden" name="attribute_id" id="attribute_id" value="">
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn" data-dismiss="modal">Close</button>
+                    <button type="button" id="save_option" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
 
         $.ajaxSetup({
@@ -102,13 +136,37 @@
 
         $(document).on("click", "#save_attribute", function (e) {
             var data = $("#form").serializeArray(),
-                url = $("#form").attr('action');
+                urlAttr = $("#form").attr('action');
+            $.ajax({
+                url: urlAttr,
+                type: 'POST',
+                data: data,
+                datatype: 'json',
+            }).done(function(data) {
+                if(data.status == false){
+                    validation_messages(data);
+                }else{
+                    window.location.reload();
+                }
+            }).fail(function (data) {
+            });
+            e.preventDefault();
+        });
+
+        $('.options').click(function () {
+            $('#attribute_id').val($(this).attr('data-attr-id'));
+        })
+
+        $(document).on("click", "#save_option", function (e) {
+            var data = $("#form_options").serializeArray(),
+                url = $("#form_options").attr('action');
             $.ajax({
                 url: url,
                 type: 'POST',
                 data: data,
                 datatype: 'json',
             }).done(function(data) {
+
                 if(data.status == false){
                     validation_messages(data);
                 }else{
