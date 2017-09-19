@@ -195,7 +195,7 @@
         $.ajax({
             url: url,
             type: 'POST',
-            data: data,
+            data: formData,
             datatype: 'json',
         }).done(function(data) {
             if(data.status == false){
