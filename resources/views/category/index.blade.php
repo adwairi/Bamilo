@@ -26,13 +26,8 @@
     <div class="container" style="margin-top:30px;">
     <div class="row">
         <div class="col-md-4">
-            <p class="well" style="height:135px;"><strong>Initialization optional parameters</strong>
-
-                <br /> <code>$('#tree3').treed({openedClass:'glyphicon-chevron-right', closedClass:'glyphicon-chevron-down'});</code>
-
-            </p>
             <ul id="tree3">
-                <li><a href="#">TECH</a>
+                <li><a href="#">Categories</a>
                     @php
                         echo cat($categories);
                     @endphp
