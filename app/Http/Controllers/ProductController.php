@@ -82,16 +82,16 @@ class ProductController extends Controller
         $product->category_id = $data['category'];
         $product->user_id = Auth::user()->id;
 
-        $image = $request->file('image');
-
-        $input['imagename'] = time().'.'.$image->getClientOriginalExtension();
-
-        $destinationPath = public_path('/images');
-
-        $image->move($destinationPath, $input['imagename']);
-
-
-        $this->postImage->add($input);
+//        $image = $request->file('image');
+//
+//        $input['imagename'] = time().'.'.$image->getClientOriginalExtension();
+//
+//        $destinationPath = public_path('/images');
+//
+//        $image->move($destinationPath, $input['imagename']);
+//
+//
+//        $this->postImage->add($input);
 
 //        $imgName = time().'.'.$request->image->getClientOriginalExtension();
 //        $request->user_photo->move(public_path('images'), $imgName);
