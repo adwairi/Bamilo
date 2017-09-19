@@ -31,22 +31,6 @@
                     @php
                         echo cat($categories);
                     @endphp
-                    <ul>
-                        <li>Company Maintenance</li>
-                        <li>Employees
-                            <ul>
-                                <li>Reports
-                                    <ul>
-                                        <li>Report1</li>
-                                        <li>Report2</li>
-                                        <li>Report3</li>
-                                    </ul>
-                                </li>
-                                <li>Employee Maint.</li>
-                            </ul>
-                        </li>
-                        <li>Human Resources</li>
-                    </ul>
                 </li>
             </ul>
         </div>
