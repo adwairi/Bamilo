@@ -1,4 +1,4 @@
-@extends('layouts.main')
+@extends('layouts.admin')
 
 @section('content')
     <div class="px-content">
@@ -125,7 +125,8 @@
             </div>
         </div>
     </div>
-
+@endsection
+@section('scripts')
     <script>
 
         $.ajaxSetup({

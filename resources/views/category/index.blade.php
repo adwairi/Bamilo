@@ -1,4 +1,4 @@
-@extends('layouts.main')
+@extends('layouts.admin')
 
 @section('content')
 
@@ -23,22 +23,29 @@
         }
     @endphp
 
-    <div class="container" style="margin-top:30px;">
-    <div class="row">
-        <div class="col-md-4">
-            <ul id="tree3">
-                <li><a href="#">Categories</a>
-                    @php
-                        echo cat($categories);
-                    @endphp
-                </li>
-            </ul>
+    <div class="px-container">
+        <div class="row">
+            <div class="col-md-4">
+                <div id="jstree_demo_div">
+                <ul id="tree3">
+                        <li><a href="#">Categories</a>
+                            @php
+                                echo cat($categories);
+                            @endphp
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
-</div>
-
+@endsection
+@section('scripts')
     <script>
-         $('#tree3').treed({openedClass:'glyphicon-chevron-right', closedClass:'glyphicon-chevron-down'});
+        $(function () { $('#jstree_demo_div').jstree(); });
+        $('#jstree_demo_div').on("changed.jstree", function (e, data) {
+            console.log(data.selected);
+        });
+//         $('#tree3').treed({openedClass:'glyphicon-chevron-right', closedClass:'glyphicon-chevron-down'});
     </script>
 @endsection
 

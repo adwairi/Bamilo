@@ -34,3 +34,7 @@
 
 <!-- holder.js -->
 <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/holder/2.9.0/holder.js"></script>
+
+
+{{--<script src="{{ asset('assets/jsTree/dist/jstree.js') }}"></script>--}}
+{{--<link rel="stylesheet" href="{{ asset('assets/jsTree/dist/themes/default/style.min.css') }}" />--}}
