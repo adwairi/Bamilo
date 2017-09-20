@@ -1,4 +1,4 @@
-@include('layouts.main')
+@e('layouts.main')
 
 
         <!doctype html>

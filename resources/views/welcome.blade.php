@@ -1,103 +1,82 @@
-@include('layouts.main')
+@extends('layouts.admin')
 
+@section('content')
 
-<!doctype html>
-<html lang="{{ app()->getLocale() }}">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-
-        <title>Laravel</title>
-
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
-
-        <!-- Styles -->
-        <style>
-            html, body {
-                background-color: #fff;
-                color: #636b6f;
-                font-family: 'Raleway', sans-serif;
-                font-weight: 100;
-                height: 100vh;
-                margin: 0;
-            }
-
-            .full-height {
-                height: 100vh;
-            }
-
-            .flex-center {
-                align-items: center;
-                display: flex;
-                justify-content: center;
-            }
-
-            .position-ref {
-                position: relative;
-            }
-
-            .top-right {
-                position: absolute;
-                right: 10px;
-                top: 18px;
-            }
-
-            .content {
-                text-align: center;
-            }
-
-            .title {
-                font-size: 84px;
-            }
-
-            .links > a {
-                color: #636b6f;
-                padding: 0 25px;
-                font-size: 12px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-decoration: none;
-                text-transform: uppercase;
-            }
-
-            .m-b-md {
-                margin-bottom: 30px;
-            }
-        </style>
-    </head>
-    <body>
-        {{--<div class="flex-center position-ref full-height">--}}
-
-            <div class="content">
-                <div id="page-content-wrapper">
-                    <div class="container">
-                        <div class="row">
-                            <h1>
-                                Dynamically blurring avatar images using Canvas.
-                            </h1>
+    @include('main.filters')
+    <div class="px-content">
+        <div class="page-header">
+            <h1><span class="text-muted font-weight-light"><i class="page-header-icon ion-erlenmeyer-flask"></i>Widgets / </span>Misc</h1>
+        </div>
+        <!-- Profile widget -->
+        @foreach($products as $key=>$product)
+            @if($key%2==0)<div class="row">@endif
+                <div class="col-md-4">
+                    <!-- Centered -->
+                    <div class="panel panel-default panel-dark panel-body-colorful widget-profile-centered">
+                        <div class="panel-heading">
+                            <img src="{{ asset('assets/pixel/dist/demo/avatars/1.jpg') }}" alt="" class="widget-profile-avatar">
+                            <h3 class="widget-profile-header">
+                                <p>{{ $product->title }}, {{ $product->product_model }}<br>
+                                {{ $product->price }}
+                            </h3>
                         </div>
-                        @foreach($products as $product)
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <div class="card">
-                                    <canvas class="header-bg" width="250" height="70" id="header-blur"></canvas>
-                                    <div class="avatar">
-                                        <img src="{{ $product->imgUrl }}" alt="" />
-                                    </div>
-                                    <div class="content">
-                                        <p>{{ $product->title }}, {{ $product->product_model }}<br>
-                                            {{ $product->price }}</p>
-                                        <p><button class="buy" data-product-id="{{ $product->id }}" type="button" class="btn btn-default">Buy</button></p>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="panel-body panel-body-colorful panel-primary">
+                            <p><button data-product-id="{{ $product->id }}" type="button" class="btn btn-warning btn-lg  buy">Buy</button></p>
                         </div>
-                        @endforeach
                     </div>
+
                 </div>
-            </div>
-        {{--</div>--}}
-    </body>
-</html>
+            @if($key%2==0)<div>@endif
+        @endforeach
+
+        <!-- / Profile widget -->
+
+    </div>
+@endsection
+@section('scripts')
+    <script>
+        pxDemo.initializeDemoSidebar();
+
+        pxInit.push(function() {
+            $('#px-demo-sidebar').pxSidebar();
+            pxDemo.initializeDemo();
+        });
+    </script>
+
+    <!-- Get jQuery from Google CDN -->
+    <!--[if !IE]> -->
+    <script type="text/javascript"> window.jQuery || document.write('<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js">'+"<"+"/script>"); </script>
+    <!-- <![endif]-->
+    <!--[if lte IE 9]>
+    <script type="text/javascript"> window.jQuery || document.write('<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js">'+"<"+"/script>"); </script>
+    <![endif]-->
+
+    <script src="../../dist/js/bootstrap.js"></script>
+    <script src="../../dist/js/pixeladmin.js"></script>
+
+    <script type="text/javascript">
+        pxInit.unshift(function() {
+            var file = String(document.location).split('/').pop();
+
+            // Remove unnecessary file parts
+            file = file.replace(/(\.html).*/i, '$1');
+
+            if (!/.html$/i.test(file)) {
+                file = 'index.html';
+            }
+
+            // Activate current nav item
+            $('#px-demo-nav')
+                .find('.px-nav-item > a[href="' + file + '"]')
+                .parent()
+                .addClass('active');
+
+            $('#px-demo-nav').pxNav();
+            $('#px-demo-footer').pxFooter();
+        });
+
+        for (var i = 0, len = pxInit.length; i < len; i++) {
+            pxInit[i].call(null);
+        }
+    </script>
+@endsection
