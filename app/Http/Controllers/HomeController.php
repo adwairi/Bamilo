@@ -31,7 +31,7 @@ class HomeController extends Controller
             'categories' => Category::all(),
             'attributes' => Attribute::all(),
         ];
-        return view('home', $params);
+        return view('welcome', $params);
     }
 
 
