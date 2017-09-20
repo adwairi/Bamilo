@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Entity\Category;
+use Illuminate\Support\Facades\Auth;
+
 class CategoryController extends Controller
 {
 
@@ -25,9 +27,13 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::with('children')->get();
-
-        return view('category.index', ['categories' => $categories]);
+        $categories = Category::with('children')
+            ->where(['user_id' => Auth::id()])
+            ->whereNull('parent_id')
+            ->get();
+//print_r($categories->toArray());
+//die;
+        return view('category.index', ['categories' => $categories->toArray()]);
     }
 
     /**

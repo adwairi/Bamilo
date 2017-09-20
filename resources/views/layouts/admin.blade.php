@@ -22,6 +22,10 @@
     <script src="{{ asset('js/bamilo/tree_view.js') }}"></script>
     <script src="{{ asset('js/bamilo/data_table.js') }}"></script>
     {{--<script src="{{ asset('js/bamilo/pace.min.js') }}"></script>--}}
+
+    <script src="{{ asset('assets/pixel/dist/js/bootstrap.js') }}"></script>
+    <script src="{{ asset('assets/pixel/dist/js/pixeladmin.js') }}"></script>
+
     @include('main.headHTML')
 
 
