@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Entity\Category;
 use Illuminate\Support\Facades\Auth;
-
+use Validator;
 class CategoryController extends Controller
 {
 
@@ -31,8 +31,6 @@ class CategoryController extends Controller
             ->where(['user_id' => Auth::id()])
             ->whereNull('parent_id')
             ->get();
-//print_r($categories->toArray());
-//die;
         return view('category.index', ['categories' => $categories->toArray()]);
     }
 
@@ -54,7 +52,21 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'title'     => 'required'
+        ]);
+        if($validator->fails())
+            return response()->json(['status'=>false, 'message'=>$validator->messages()]);
+
+        $category = new Category();
+        $data = $request->all();
+        $category->title = $data['title'];
+        $category->desc = $data['desc'];
+        $category->parent_id = $data['parent_category'];
+        $category->user_id = Auth::user()->id;
+        if ($category->save()){
+            return response()->json(['status'=>true]);
+        }
     }
 
     /**

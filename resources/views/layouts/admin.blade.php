@@ -21,6 +21,7 @@
     {{--<script src="{{ asset('js/bamilo/items.js') }}"></script>--}}
     <script src="{{ asset('js/bamilo/tree_view.js') }}"></script>
     <script src="{{ asset('js/bamilo/data_table.js') }}"></script>
+    <script src="{{ asset('js/bamilo/validation_messages.js') }}"></script>
     {{--<script src="{{ asset('js/bamilo/pace.min.js') }}"></script>--}}
 
     <script src="{{ asset('assets/pixel/dist/js/bootstrap.js') }}"></script>
