@@ -11,7 +11,7 @@
     <title>{{ config('app.name', 'Bamilo') }}</title>
 
 
-    {{--<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">--}}
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
     {{--<link href="{{ asset('css/bamilo/items.css') }}" rel="stylesheet" type="text/css">--}}
     <link href="{{ asset('css/bamilo/tree_view.css') }}" rel="stylesheet" type="text/css">
     {{--    <link href="{{ asset('css/bamilo/topBare.css') }}" rel="stylesheet" type="text/css">--}}
