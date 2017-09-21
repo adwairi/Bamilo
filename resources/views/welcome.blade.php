@@ -14,7 +14,7 @@
                     <!-- Centered -->
                     <div class="panel panel-default panel-dark panel-body-colorful widget-profile-centered">
                         <div class="panel-heading">
-                            <img src="{{ asset('assets/pixel/dist/demo/avatars/1.jpg') }}" alt="" class="widget-profile-avatar">
+                            <img src="{{ asset($product->imgUrl) }}" alt="" class="widget-profile-avatar">
                             <h3 class="widget-profile-header">
                                 <p>{{ $product->title }}, {{ $product->product_model }}<br>
                                 {{ $product->price }}

@@ -185,11 +185,12 @@
         }
     });
 
+    //productValidation
     $(document).on("click", "#save_product", function (e) {
         var data = $("#form").serializeArray(),
             url = $("#form").attr('action');
         $.ajax({
-            url: url,
+            url: '{{ route('productValidation') }}',
             type: 'POST',
             data: data,
             datatype: 'json',
@@ -197,12 +198,34 @@
             if(data.status == false){
                 validation_messages(data);
             }else{
-                window.location.reload();
+                $("#form").submit();
+//                window.location.reload();
             }
         }).fail(function (data) {
         });
         e.preventDefault();
     });
+
+    ///
+
+//    $(document).on("click", "#save_product", function (e) {
+//        var data = $("#form").serializeArray(),
+//            url = $("#form").attr('action');
+//        $.ajax({
+//            url: url,
+//            type: 'POST',
+//            data: data,
+//            datatype: 'json',
+//        }).done(function(data) {
+//            if(data.status == false){
+//                validation_messages(data);
+//            }else{
+//                window.location.reload();
+//            }
+//        }).fail(function (data) {
+//        });
+//        e.preventDefault();
+//    });
 
     $('.attributes').click(function () {
         $('#product_id').val($(this).attr('data-product-id'));

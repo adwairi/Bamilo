@@ -82,23 +82,34 @@ class ProductController extends Controller
         $product->category_id = $data['category'];
         $product->user_id = Auth::user()->id;
 
-//        $image = $request->file('image');
-//
-//        $input['imagename'] = time().'.'.$image->getClientOriginalExtension();
-//
-//        $destinationPath = public_path('/images');
-//
-//        $image->move($destinationPath, $input['imagename']);
-//
-//
-//        $this->postImage->add($input);
+        $image = $request->file('image');
+        $imagename = time().'.'.$image->getClientOriginalExtension();
+        $destinationPath = public_path('/images');
+        $x = $image->move($destinationPath, $imagename);
 
-//        $imgName = time().'.'.$request->image->getClientOriginalExtension();
-//        $request->user_photo->move(public_path('images'), $imgName);
+        $product->imgUrl = 'images/'.$imagename;
 
         if ($product->save()){
-            return response()->json(['status'=>true]);
+            return redirect('product');
         }
+
+    }
+
+
+    public function validation(Request $request){
+        $validator = Validator::make($request->all(), [
+            'title'     => 'required',
+            'model'     => 'required',
+            'status'    => 'required|in:not_available,available,coming_soon',
+            'price'     => 'required|integer',
+            'quantity'  => 'required|integer',
+            'category'  => 'required',
+            'image'     => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+        ]);
+        if($validator->fails())
+            return response()->json(['status'=>false, 'message'=>$validator->messages()]);
+        else
+            return response()->json(['status'=>true]);
 
     }
 
