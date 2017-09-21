@@ -42,7 +42,7 @@
                                                 <button type="button" class="attributes btn btn-success btn-sm" data-product-id="{{$product->id}}" data-toggle="modal" data-target="#modal-attr">
                                                     Add Attributes
                                                 </button>
-                                                <button type="button" class="images btn btn-info btn-sm" data-toggle="modal" data-target="#modal-image">
+                                                <button type="button" class="images btn btn-info btn-sm" id="image-view-button" data-toggle="modal" data-target="#modal-image-view" data-product-id="{{$product->id}}">
                                                     Image
                                                 </button>
                                             </td>
@@ -142,6 +142,7 @@
             </div>
 
 
+
             <div class="modal fade" id="modal-attr" tabindex="-1">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -175,6 +176,32 @@
                     </div>
                 </div>
             </div>
+
+
+
+            <div class="modal fade" id="modal-image-view" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">×</button>
+                            <h4 class="modal-title" id="myModalLabel">Product Image</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div>
+                                <img id="product-image" src="" alt="" class="" style="max-width: 100%;">
+                                <hr class="m-y-0">
+                                    {{--<button type="button" class="btn btn-primary">Change</button>&nbsp;--}}
+                                    {{--<button type="button" class="btn"><i class="fa fa-trash"></i></button>--}}
+                                <div class="m-t-2 text-muted font-size-12" id="image-view-msg"></div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
 @endsection
 @section('scripts')
 <script>
@@ -184,6 +211,8 @@
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
+
+
 
     //productValidation
     $(document).on("click", "#save_product", function (e) {
@@ -199,33 +228,12 @@
                 validation_messages(data);
             }else{
                 $("#form").submit();
-//                window.location.reload();
             }
         }).fail(function (data) {
         });
         e.preventDefault();
     });
 
-    ///
-
-//    $(document).on("click", "#save_product", function (e) {
-//        var data = $("#form").serializeArray(),
-//            url = $("#form").attr('action');
-//        $.ajax({
-//            url: url,
-//            type: 'POST',
-//            data: data,
-//            datatype: 'json',
-//        }).done(function(data) {
-//            if(data.status == false){
-//                validation_messages(data);
-//            }else{
-//                window.location.reload();
-//            }
-//        }).fail(function (data) {
-//        });
-//        e.preventDefault();
-//    });
 
     $('.attributes').click(function () {
         $('#product_id').val($(this).attr('data-product-id'));
@@ -289,6 +297,24 @@
         e.preventDefault();
     });
 
+
+    $(document).on("click", "#image-view-button", function (e) {
+
+        var image_view_button = $(this);
+        var id = image_view_button.attr('data-product-id');
+        $.ajax({
+            url: "/product/"+id,
+            type: 'GET',
+            datatype: 'json',
+        }).done(function(data) {
+            if(data.status == true){
+                $('#product-image').prop('src', data.src);
+            }else{
+                $('#image-view-msg').html(data.msg);
+            }
+        });
+        e.preventDefault();
+    });
 
 </script>
 

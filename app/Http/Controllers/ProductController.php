@@ -121,7 +121,12 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        //
+        if ($id != 0){
+            $product = Product::find($id);
+            if ($product->imgUrl != '')
+                return response()->json(['status'=>true, 'src'=>asset($product->imgUrl)]);
+        }
+            return response()->json(['status'=>false, 'msg'=>'There is no image or something wrong!']);
     }
 
     /**
