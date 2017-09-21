@@ -41,42 +41,5 @@
             $('#px-demo-sidebar').pxSidebar();
             pxDemo.initializeDemo();
         });
-    </script>
 
-    <!-- Get jQuery from Google CDN -->
-    <!--[if !IE]> -->
-    <script type="text/javascript"> window.jQuery || document.write('<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js">'+"<"+"/script>"); </script>
-    <!-- <![endif]-->
-    <!--[if lte IE 9]>
-    <script type="text/javascript"> window.jQuery || document.write('<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js">'+"<"+"/script>"); </script>
-    <![endif]-->
-
-    <script src="../../dist/js/bootstrap.js"></script>
-    <script src="../../dist/js/pixeladmin.js"></script>
-
-    <script type="text/javascript">
-        pxInit.unshift(function() {
-            var file = String(document.location).split('/').pop();
-
-            // Remove unnecessary file parts
-            file = file.replace(/(\.html).*/i, '$1');
-
-            if (!/.html$/i.test(file)) {
-                file = 'index.html';
-            }
-
-            // Activate current nav item
-            $('#px-demo-nav')
-                .find('.px-nav-item > a[href="' + file + '"]')
-                .parent()
-                .addClass('active');
-
-            $('#px-demo-nav').pxNav();
-            $('#px-demo-footer').pxFooter();
-        });
-
-        for (var i = 0, len = pxInit.length; i < len; i++) {
-            pxInit[i].call(null);
-        }
-    </script>
 @endsection
