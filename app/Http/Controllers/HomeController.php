@@ -31,7 +31,9 @@ class HomeController extends Controller
             'categories' => Category::all(),
             'attributes' => Attribute::all(),
         ];
-        return view('welcome', $params);
+
+        return response()->json(['status'=>true, 'params'=>$params]);
+//        return view('welcome', $params);
     }
 
 

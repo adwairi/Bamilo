@@ -12,13 +12,13 @@
                 <h6 class="px-demo-sidebar-header b-y-1 darker">Categories</h6>
                 <div>
                     <div class="box m-a-0 border-radius-0 bg-transparent">
-                        @foreach($categories as $category)
+                        {{--@foreach($categories as $category)--}}
                             <div class="p-l-3 checkbox m-t-0">
-                                <label>
-                                    <input class="filteration" type="checkbox" name="categories[]" value="{{ $category->id }}"> {{ $category->title }}
+                                <label> aaaa
+                                    {{--<input class="filteration" type="checkbox" name="categories[]" value="{{ $category->id }}"> {{ $category->title }}--}}
                                 </label>
                             </div>
-                        @endforeach
+                        {{--@endforeach--}}
                     </div>
                 </div>
             </div>
@@ -28,13 +28,13 @@
                 <h6 class="px-demo-sidebar-header b-y-1 darker">Attributes</h6>
                 <div>
                     <div class="box m-a-0 border-radius-0 bg-transparent">
-                        @foreach($attributes as $attribute)
+{{--                        @foreach($attributes as $attribute)--}}
                             <div class="p-l-3 checkbox m-t-0">
-                                <label>
-                                    <input type="checkbox" class="filteration" name="attributes[]" value="{{ $attribute->id }}"> {{ $attribute->title }}
+                                <label>aaaa
+                                    {{--<input type="checkbox" class="filteration" name="attributes[]" value="{{ $attribute->id }}"> {{ $attribute->title }}--}}
                                 </label>
                             </div>
-                        @endforeach
+                        {{--@endforeach--}}
                     </div>
                 </div>
             </div>
