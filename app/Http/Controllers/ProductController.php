@@ -87,7 +87,7 @@ class ProductController extends Controller
         $destinationPath = public_path('/images');
         $x = $image->move($destinationPath, $imagename);
 
-        $product->imgUrl = 'images/'.$imagename;
+        $product->imgUrl = asset('images/'.$imagename);
 
         if ($product->save()){
             return redirect('product');
@@ -124,7 +124,7 @@ class ProductController extends Controller
         if ($id != 0){
             $product = Product::find($id);
             if ($product->imgUrl != '')
-                return response()->json(['status'=>true, 'src'=>asset($product->imgUrl)]);
+                return response()->json(['status'=>true, 'src'=>$product->imgUrl]);
         }
             return response()->json(['status'=>false, 'msg'=>'There is no image or something wrong!']);
     }
