@@ -24,30 +24,16 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        $params = [
-            'products' => Product::all(),
-            'categories' => Category::all(),
-            'attributes' => Attribute::all(),
-        ];
-
-        return response()->json(['status'=>true, 'params'=>$params]);
-//        return view('welcome', $params);
-    }
-
-
-    public function filter(Request $request)
+    public function index(Request $request)
     {
         $categoriesFilter = $request->get('categories');
         $attributesFilter = $request->get('attributes');
-
-        $productObj = new Product();
+        $productObj = Product::with('attributes');
         if (count($categoriesFilter))
             $productObj->whereIn('category_id', $categoriesFilter);
         if (count($attributesFilter))
             $productObj->whereHas('attributes', function ($query) use ($attributesFilter) {
-                $query->whereIn('id', $attributesFilter);
+                $query->whereIn('attribute_id', $attributesFilter);
             });
 
         $products = $productObj->get();
@@ -57,8 +43,12 @@ class HomeController extends Controller
             'categories' => Category::all(),
             'attributes' => Attribute::all(),
         ];
-        return response()->json(['data' => $params]);
+
+        return response()->json(['status'=>true, 'params'=>$params]);
     }
+
+
+
 
 
 
