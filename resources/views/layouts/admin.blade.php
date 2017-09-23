@@ -12,17 +12,13 @@
 
 
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
-    {{--<link href="{{ asset('css/bamilo/items.css') }}" rel="stylesheet" type="text/css">--}}
     <link href="{{ asset('css/bamilo/tree_view.css') }}" rel="stylesheet" type="text/css">
-    {{--    <link href="{{ asset('css/bamilo/topBare.css') }}" rel="stylesheet" type="text/css">--}}
 
 
     <script src="{{ asset('node_modules/jquery/dist/jquery.js') }}"></script>
-    {{--<script src="{{ asset('js/bamilo/items.js') }}"></script>--}}
     <script src="{{ asset('js/bamilo/tree_view.js') }}"></script>
     <script src="{{ asset('js/bamilo/data_table.js') }}"></script>
     <script src="{{ asset('js/bamilo/validation_messages.js') }}"></script>
-    {{--<script src="{{ asset('js/bamilo/pace.min.js') }}"></script>--}}
 
     <script src="{{ asset('assets/pixel/dist/js/bootstrap.js') }}"></script>
     <script src="{{ asset('assets/pixel/dist/js/pixeladmin.js') }}"></script>

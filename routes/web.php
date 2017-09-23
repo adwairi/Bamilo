@@ -11,7 +11,7 @@
 |
 */
 
-Route::get('/0',function (){
+Route::get('/',function (){
     return view('welcome');
 });
 Route::get('/data', 'HomeController@index')->name('home');
