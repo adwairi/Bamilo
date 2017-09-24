@@ -74,9 +74,16 @@ class ProductAttributesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id = 0)
     {
-        //
+        if ($id == 0)
+            return response()->json(['status' => false]);
+
+        $attr = ProductAttributes::with('Attribute')->where(['product_id'=>$id])->get();
+        if (count($attr))
+            return response()->json(['status' => true, 'data'=>$attr]);
+        else
+            return response()->json(['status' => false, 'message'=>'there is no Attributes  ']);
     }
 
     /**
@@ -108,8 +115,14 @@ class ProductAttributesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id = 0, Request $request)
     {
-        //
+
+        $attr_array = $request->get('delete_attr');
+        if ($id == 0 || !count($attr_array))
+            return response()->json(['status' => false,'message'=>'Something Wrong!']);
+
+        ProductAttributes::where(['product_id' => $id])->whereIn('attribute_id',$attr_array)->delete();
+        return response()->json(['status'=>true, 'data'=>$attr_array, 'message'=>'Deleted Successfully']);
     }
 }

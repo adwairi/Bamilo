@@ -105,18 +105,45 @@
                     <h4 class="modal-title" id="myModalLabel">Add Option</h4>
                 </div>
                 <div class="modal-body">
-                    <form action="/attributeOptions" id="form_options" method="POST" class="form-horizontal" enctype="multipart/form-data">
-                        {{ csrf_field() }}
+                    <div class="row">
+                        <div class="col-md-12">
+                            <form action="/attributeOptions" id="form_options" method="POST" class="form-horizontal" enctype="multipart/form-data">
+                                {{ csrf_field() }}
 
-                        <div class="form-group">
-                            <label for="title" class="col-md-3 control-label">Title <span class="text-danger">*</span></label>
-                            <div class="col-md-9">
-                                <input type="text" class="form-control" name="option_title" id="option_title" placeholder="title">
-                                <font color="red" class="validation" id="option_title_validation" ></font>
-                            </div>
+                                <div class="form-group">
+                                    <label for="title" class="col-md-3 control-label">Title <span class="text-danger">*</span></label>
+                                    <div class="col-md-9">
+                                        <input type="text" class="form-control" name="option_title" id="option_title" placeholder="title">
+                                        <font color="red" class="validation" id="option_title_validation" ></font>
+                                    </div>
+                                </div>
+                                <input type="hidden" name="attribute_id" class="attribute_id" value="">
+                            </form>
                         </div>
-                        <input type="hidden" name="attribute_id" id="attribute_id" value="">
-                    </form>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <form id="selected-options" action="/attributeOptions" method="POST">
+                                {{ csrf_field() }}
+                                {{ method_field("DELETE") }}
+                                <table class="table table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th>
+                                            <button type="button" class="btn btn-danger btn-sm" id="delete-options">
+                                                <span class="btn-label-icon left"><i class="fa fa-trash"></i></span>Delete
+                                            </button>
+                                        </th>
+                                        <th>Already Added Options</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="options-body">
+                                    </tbody>
+                                </table>
+                                <input type="hidden" name="attribute_id" class="attribute_id" value="">
+                            </form>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn" data-dismiss="modal">Close</button>
@@ -154,9 +181,39 @@
             e.preventDefault();
         });
 
+
         $('.options').click(function () {
-            $('#attribute_id').val($(this).attr('data-attr-id'));
-        })
+            var attribute_id = $(this).attr('data-attr-id'),
+                url = $("#form_options").attr('action');
+
+            $('.attribute_id').val(attribute_id);
+
+            $.ajax({
+                url: url+'/'+attribute_id,
+                type: 'GET',
+                datatype: 'json',
+            }).done(function(data) {
+                if(data.status == true){
+                    $('#options-body').empty();
+                    var html = '';
+                    $.each(data.data, function (index, element) {
+                        html += '<tr>';
+                        html += '<td><input type="checkbox" name="delete_options[]" value="'+element.id+'" id="'+element.id+'" /></td>';
+                        html += '<td>'+element.title+'</td>';
+                        html += '</tr>';
+                    });
+                    $('#options-body').append(html);
+                }else{
+                    $('#options-body').empty();
+                    var html = '';
+                        html += '<tr>';
+                        html += '<td colspan="2">'+data.message+'</td>';
+                        html += '</tr>';
+                    $('#options-body').append(html);
+                }
+            })
+
+        });
 
         $(document).on("click", "#save_option", function (e) {
             var data = $("#form_options").serializeArray(),
@@ -194,6 +251,26 @@
                 $('#'+field_name).html(html);
             });
         }
+
+        $(document).on("click", "#delete-options", function (e) {
+            var data = $("#selected-options").serializeArray(),
+                product_id = $('.attribute_id').val();
+            $.ajax({
+                url: "/attributeOptions/"+product_id,
+                type: 'DELETE',
+                data:  data,
+                datatype: 'json',
+            }).done(function(data) {
+                if(data.status == true){
+                    $.each(data.data, function (index, element) {
+                        $('#'+element).closest("tr").remove();
+                    });
+                    alert(data.message);
+                }else{
+                    alert(data.message);
+                }
+            });
+        });
 
     </script>
 

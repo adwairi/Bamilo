@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Entity\Attribute;
 use App\Entity\AttributeOptions;
 use Illuminate\Http\Request;
 use Validator;
@@ -73,9 +74,16 @@ class AttributeOptionsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id = 0)
     {
-        //
+        if ($id == 0)
+            return response()->json(['status' => false]);
+
+        $options = AttributeOptions::where(['attribute_id'=>$id])->get();
+        if (count($options))
+            return response()->json(['status' => true, 'data'=>$options]);
+        else
+            return response()->json(['status' => false, 'message'=>'there is no options']);
     }
 
     /**
@@ -107,8 +115,14 @@ class AttributeOptionsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id = 0, Request $request)
     {
-        //
+
+        $options_array = $request->get('delete_options');
+        if ($id == 0 || !count($options_array))
+            return response()->json(['status' => false,'message'=>'Something Wrong!']);
+
+        AttributeOptions::where(['attribute_id' => $id])->whereIn('id',$options_array)->delete();
+        return response()->json(['status'=>true, 'data'=>$options_array, 'message'=>'Deleted Successfully']);
     }
 }

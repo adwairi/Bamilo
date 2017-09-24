@@ -151,23 +151,50 @@
                             <h4 class="modal-title" id="myModalLabel">Add Attributes</h4>
                         </div>
                         <div class="modal-body">
-                            <form action="/productAttributes" id="form_attr" method="POST" class="form-horizontal" enctype="multipart/form-data">
-                                {{ csrf_field() }}
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <form action="/productAttributes" id="form_attr" method="POST" class="form-horizontal" enctype="multipart/form-data">
+                                        {{ csrf_field() }}
 
-                                <div class="form-group">
-                                    <label for="attributes" class="col-md-3 control-label">Attributes <span class="text-danger">*</span></label>
-                                    <div class="col-md-9">
-                                        <select class="form-control" id="attributes" name="attributes[]" multiple>
-                                            <option></option>
-                                            @foreach($attributes as $attribute)
-                                                <option value="{{$attribute['id']}}">{{$attribute['title']}}</option>
-                                            @endforeach
-                                        </select>
-                                        <font color="red" class="validation" id="attributes_validation" ></font>
-                                    </div>
+                                        <div class="form-group">
+                                            <label for="attributes" class="col-md-3 control-label">Attributes <span class="text-danger">*</span></label>
+                                            <div class="col-md-9">
+                                                <select class="form-control" id="attributes" name="attributes[]" multiple>
+                                                    <option></option>
+                                                    @foreach($attributes as $attribute)
+                                                        <option value="{{$attribute['id']}}">{{$attribute['title']}}</option>
+                                                    @endforeach
+                                                </select>
+                                                <font color="red" class="validation" id="attributes_validation" ></font>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" name="product_id" class="product_id" value="">
+                                    </form>
                                 </div>
-                                <input type="hidden" name="product_id" id="product_id" value="">
-                            </form>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <form id="selected-attr" action="/productAttributes" method="POST">
+                                        {{ csrf_field() }}
+                                        {{ method_field("DELETE") }}
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>
+                                                        <button type="button" class="btn btn-danger btn-sm" id="delete-attr">
+                                                            <span class="btn-label-icon left"><i class="fa fa-trash"></i></span>Delete
+                                                        </button>
+                                                    </th>
+                                                    <th>Already Added Attributes</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="attr-body">
+                                            </tbody>
+                                        </table>
+                                        <input type="hidden" name="product_id" class="product_id" value="">
+                                    </form>
+                                </div>
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn" data-dismiss="modal">Close</button>
@@ -236,8 +263,38 @@
 
 
     $('.attributes').click(function () {
-        $('#product_id').val($(this).attr('data-product-id'));
-    })
+        var product_id = $(this).attr('data-product-id'),
+            url = $("#form_attr").attr('action');
+
+        $('.product_id').val(product_id);
+
+        $.ajax({
+            url: url+'/'+product_id,
+            type: 'GET',
+            datatype: 'json',
+        }).done(function(data) {
+            if(data.status == true){
+                $('#attr-body').empty();
+                var html = '';
+                $.each(data.data, function (index, element) {
+                    html += '<tr>';
+                    html += '<td><input type="checkbox" name="delete_attr[]" value="'+element.id+'" id="'+element.id+'" /></td>';
+                    html += '<td>'+element.attribute.title+'</td>';
+                    html += '</tr>';
+                });
+                $('#attr-body').append(html);
+            }else{
+                    $('#attr-body').empty();
+                    var html = '';
+                    html += '<tr>';
+                    html += '<td colspan="2">'+data.message+'</td>';
+                    html += '</tr>';
+                    $('#attr-body').append(html);
+            }
+        })
+
+    });
+
 
 
     $(document).on("click", "#save_attributes", function (e) {
@@ -314,6 +371,26 @@
             }
         });
         e.preventDefault();
+    });
+
+    $(document).on("click", "#delete-attr", function (e) {
+        var data = $("#selected-attr").serializeArray(),
+            product_id = $('.product_id').val();
+        $.ajax({
+            url: "/productAttributes/"+product_id,
+            type: 'DELETE',
+            data:  data,
+            datatype: 'json',
+        }).done(function(data) {
+            if(data.status == true){
+                $.each(data.data, function (index, element) {
+                    $('#'+element).closest("tr").remove();
+                });
+                alert(data.message);
+            }else{
+                alert(data.message);
+            }
+        });
     });
 
 </script>
