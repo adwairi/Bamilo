@@ -136,6 +136,10 @@
             }
         }
 
+//        $(document).on('click', '#buy', function (e) {
+//            var product
+//        })
+
 //        pxDemo.initializeDemoSidebar();
 //
         pxInit.push(function() {

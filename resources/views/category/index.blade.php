@@ -6,9 +6,12 @@
         function tree($categories){
             echo '<ul>';
             foreach ($categories as $category){
-                echo "<li>".$category['title']."</li>";
                 if (isset($category['children']) && count($category['children'])){
+                    echo "<li id='$category[id]'>".$category['title'];
                     tree($category['children']);
+                    echo "</li>";
+                }else{
+                    echo "<li id='$category[id]'>".$category['title']."</li>";
                 }
             }
             echo '</ul>';
@@ -23,7 +26,7 @@
                 <div class="panel-title pull-left">Categories</div>
                 <div class="panel-heading-controls pull-right">
                     <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-default">
-                        Add Category
+                        <span class="btn-label-icon left"><i class="fa fa-plus"></i></span>Add Category
                     </button>
                 </div>
             </div>
@@ -87,9 +90,17 @@
 @endsection
 @section('scripts')
     <script>
-        $(function () { $('#jstree_demo_div').jstree(); });
+        $(function () { $('#jstree_demo_div').jstree({
+            "plugins": ["checkbox"]
+        }); });
         $('#jstree_demo_div').on("changed.jstree", function (e, data) {
-            console.log(data.selected);
+            if(data.selected.length){
+                $(data.selected).each(function (idx) {
+                    var node = data.instance.get_node(data.selected[idx]);
+                    console.log(node.id);
+                })
+            }
+//            console.log(data.selected);
         });
     </script>
 

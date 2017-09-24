@@ -11,7 +11,7 @@
                 <div class="panel-title pull-left">Attributes</div>
                 <div class="panel-heading-controls pull-right">
                     <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-default">
-                        Add Attribute
+                        <span class="btn-label-icon left"><i class="fa fa-plus"></i></span>Add Attribute
                     </button>
                 </div>
             </div>
@@ -35,10 +35,10 @@
                                 <td>{{$attribute->desc}}</td>
                                 <td>
                                     <button type="button" data-type="" data-message="" id="delete_attr_button" class="btn btn-danger btn-sm" data-attr-id="{{$attribute->id}}">
-                                        Delete
+                                        <span class="btn-label-icon left"><i class="fa fa-trash"></i></span>Delete
                                     </button>
                                     <button type="button" class="options btn btn-success btn-sm" data-attr-id="{{$attribute->id}}" data-toggle="modal" data-target="#modal-option">
-                                        Add Options
+                                        <span class="btn-label-icon left"><i class="fa fa-plus"></i></span>Add Options
                                     </button>
                                 </td>
                             </tr>

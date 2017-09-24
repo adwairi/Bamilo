@@ -7,7 +7,7 @@
                         <div class="panel-title pull-left">Products</div>
                         <div class="panel-heading-controls pull-right">
                             <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-default">
-                                Add Product
+                                <span class="btn-label-icon left"><i class="fa fa-plus"></i></span>Add Product
                             </button>
                         </div>
                     </div>
@@ -37,10 +37,10 @@
                                             <td>{{$product->desc}}</td>
                                             <td>
                                                 <button type="button" data-type="" data-message="" id="delete_product_button" class="btn btn-danger btn-sm" data-product-id="{{$product->id}}">
-                                                    Delete
+                                                    <span class="btn-label-icon left"><i class="fa fa-trash"></i></span>Delete
                                                 </button>
                                                 <button type="button" class="attributes btn btn-success btn-sm" data-product-id="{{$product->id}}" data-toggle="modal" data-target="#modal-attr">
-                                                    Add Attributes
+                                                    <span class="btn-label-icon left"><i class="fa fa-plus"></i></span>Add Attributes
                                                 </button>
                                                 <button type="button" class="images btn btn-info btn-sm" id="image-view-button" data-toggle="modal" data-target="#modal-image-view" data-product-id="{{$product->id}}">
                                                     Image
