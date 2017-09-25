@@ -136,11 +136,24 @@
             }
         }
 
-//        $(document).on('click', '#buy', function (e) {
-//            var product
-//        })
+        $(document).on('click', '#buy', function (e) {
+            var product_id = $(this).attr('data-product-id');
+            var storage = window.localStorage;
 
-//        pxDemo.initializeDemoSidebar();
+                // Parse any JSON previously stored in allEntries
+            var existingEntries = JSON.parse(storage.getItem("cart_products"));
+            if(existingEntries == null)
+                existingEntries = [];
+
+            var entry = {
+                "product_id": product_id
+            };
+//            storage.setItem("product", JSON.stringify(entry));
+            existingEntries.push(entry);
+            $("#cart-items").html(existingEntries.length);
+            storage.setItem("cart_products", JSON.stringify(existingEntries));
+
+        });
 //
         pxInit.push(function() {
             $('#px-demo-sidebar').pxSidebar();

@@ -25,4 +25,5 @@ Route::resource('product', 'ProductController');
 Route::resource('attribute', 'AttributeController');
 Route::resource('productAttributes', 'ProductAttributesController');
 Route::resource('attributeOptions', 'AttributeOptionsController');
+Route::resource('cart', 'CartController');
 Route::POST('productValidation', 'ProductController@validation')->name('productValidation');

@@ -11,6 +11,7 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="px-demo-navbar-collapse">
         <ul class="nav navbar-nav navbar-right">
+            <li><a href="/cart"><span class="px-navbar-label label label-danger" id="cart-items"></span><span class="glyphicon glyphicon-shopping-cart"></span></a></li>
             @guest
             <li><a href="{{ route('login') }}">Login</a></li>
             <li><a href="{{ route('register') }}">Register</a></li>
