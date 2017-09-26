@@ -41,6 +41,15 @@
             });
         });
 
+        function cartItems(){
+            var storage = window.localStorage;
+            var existingEntries = JSON.parse(storage.getItem("cart_products"));
+            if(existingEntries == null)
+                existingEntries = [];
+            if(existingEntries.length != 0){
+                $("#cart-items").html(existingEntries.length);
+            }
+        }
         $(document).ready(function () {
             var url = $("#filter").attr('action'),
             data = $("#filter").serializeArray();
@@ -59,6 +68,9 @@
     //                window.location.reload();
                 }
             });
+
+            // number of items in cart
+            cartItems();
         });
 
         function products(products) {

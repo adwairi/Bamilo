@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Entity\Cart;
 use App\Entity\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
@@ -54,6 +55,7 @@ class CartController extends Controller
             foreach ($products as $product){
                 $cartObj = new Cart();
                 $cartObj->product_id = $product['product_id'];
+                $cartObj->user_id = Auth::id();
                 if($cartObj->save()){
                     $product = Product::find($product['product_id']);
                     $product->quantity = $product->quantity--;
