@@ -90,11 +90,11 @@
                 }
 
                 html += '<div class="widget-products-item col-xs-12 col-sm-6 col-md-4 col-xl-3">';
-                html += '<a href="#" class="widget-products-image">';
+                html += '<a href="/home/'+element.id+'" class="widget-products-image">';
                 html += '<img class="image-url" src="'+ imgUrl +'">';
                 html += '<span class="widget-products-overlay"></span>';
                 html += '</a>';
-                html += '<a href="#" class="widget-products-title">';
+                html += '<a href="/home/'+element.id+'" class="widget-products-title">';
                 html += element.title +', '+ element.product_model;
                 html += '<span class="widget-products-price pull-xs-right label label-tag label-success">$' + element.price + '</span>';
                 html += '</a>';

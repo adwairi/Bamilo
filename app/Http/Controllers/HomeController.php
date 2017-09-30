@@ -48,6 +48,21 @@ class HomeController extends Controller
     }
 
 
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id = 0)
+    {
+        if($id == 0)
+            return false;
+
+        $products = Product::find($id);
+        return view("showItem", ['products'=>$products]);
+    }
+
 
 
 

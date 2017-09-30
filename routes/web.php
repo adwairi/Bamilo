@@ -14,7 +14,8 @@
 Route::get('/',function (){
     return view('welcome');
 });
-Route::get('/data', 'HomeController@index')->name('home');
+Route::get('/filter', 'HomeController@index')->name('home');
+Route::resource('home', 'HomeController');
 //Route::POST('/', 'HomeController@filter')->name('home');
 
 Auth::routes();
